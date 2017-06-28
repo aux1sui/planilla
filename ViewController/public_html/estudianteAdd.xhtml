@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+    <ui:composition>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <h:panelGrid columns="2">
+        <h:outputText value="Tipo Identificacion"/>
+        <h:selectOneMenu value="#{admRegistroBean.estudiante.tipoIdentificacion}">
+            <f:selectItem itemLabel="" itemValue=""/>
+            <f:selectItems value="#{admRegistroBean.tipoIdentificacionEstudianteList}" var="tipoIdentificacion" itemValue="#{tipoIdentificacion}" itemLabel="#{tipoIdentificacion.label}"/>
+        </h:selectOneMenu>
+        <h:outputText value="Numero Identificacion"/>
+        <h:inputText value="#{admRegistroBean.estudiante.numeroIdentificacion}"/>
+        <h:outputText value="Nombres"/>
+        <h:inputText value= "#{admRegistroBean.estudiante.nombres}"/>
+        <h:outputText value="Apellidos"/>
+        <h:inputText value= "#{admRegistroBean.estudiante.apellidos}"/>
+        <h:outputText value = "Género"/>
+        <h:selectOneMenu value = "#{admRegistroBean.estudiante.genero}">
+            <f:selectItem itemLabel="" itemValue=""/>
+            <f:selectItems value="#{admRegistroBean.generoEstudianteList}" var="generoEstudiante" itemValue="#{generoEstudiante}" itemLabel="#{generoEstudiante.label}"/>
+        </h:selectOneMenu>
+        <h:outputText value = "Correo"/>
+        <h:inputText value = "#{admRegistroBean.estudiante.correo}"/>
+        <h:outputText value = "Direccion"/>
+        <h:inputText value= "#{admRegistroBean.estudiante.direccion}"/>
+        <h:outputText value= "Telefono"/>
+        <h:inputText value = "#{admRegistroBean.estudiante.telefono}"/>
+        <h:outputText value = "Grupo Sanguineo"/>
+        <h:selectOneMenu value = "#{admRegistroBean.estudiante.grupoSanguineo}">
+            <f:selectItem itemLabel="" itemValue=""/>
+            <f:selectItems value="#{admRegistroBean.grupoSanguineoEstudianteList}" var="grupoSanguineoEstudiante" itemValue="#{grupoSanguineoEstudiante}" itemLabel="#{grupoSanguineoEstudiante.label}"/>
+        </h:selectOneMenu>
+        <h:outputText value = "Fecha de nacimiento" />
+        <rich:calendar value="#{admRegistroBean.estudiante.fechaNacimiento}" enableManualInput="true" datePattern="#{admRegistroBean.datePatternInput}" label="Fecha nacimiento" required="true"></rich:calendar>
+        <h:commandButton value="Guardar" action="#{admRegistroBean.addEstudianteAction}"/>
+        <h:commandButton value="Cancelar" action="#{admRegistroBean.cancelAction}" immediate="true"/>
+        </h:panelGrid>
+    </ui:composition>
+</html>

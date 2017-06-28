@@ -1,0 +1,31 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Menu</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <div id="layout">
+                <div id="header">
+                    <ui:include src="/head.xhtml"/>
+                </div>
+                <rich:messages errorStyle="color:Red;" infoStyle="color:Green;"/>
+                <div>
+                    <h:panelGrid columns="2">
+                        <h:panelGrid id="menu" width="20%">
+                            <ui:include src="/menu.xhtml"/>
+                        </h:panelGrid>
+                        <h:panelGrid id="content" width="80%">
+                            <ui:include src="/#{admRegistroBean.page}"/>
+                        </h:panelGrid>
+                    </h:panelGrid>
+                </div>
+                <div id="footer" style="font-family:fantasy;"></div>
+                <p>
+                    <a href="https://www.google.com.co">Copyright © 2017 - Política de protección de datos personales - Un servicio de la Oficina de Comunicaciones y Relaciones Públicas</a>
+                </p>
+            </div>
+        </h:form>
+    </h:body>
+</html>
