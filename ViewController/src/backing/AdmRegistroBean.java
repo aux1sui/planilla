@@ -1,5 +1,6 @@
 package backing;
 
+import entities.Curso;
 import entities.Estudiante;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import utils.ListGenerator;
 public class AdmRegistroBean implements Serializable{
     
     @SuppressWarnings("compatibility")
+        //Fields
     private static final long serialVersionUID = 8336114230726923893L;
 
     private String datePatternInput = "dd/MM/yyyy";
@@ -28,19 +30,98 @@ public class AdmRegistroBean implements Serializable{
     private DelegatePlanilla planillaDelegate;
     
     
+    //
     private List<Estudiante.TipoIdentificacion> tipoIdentificacionEstudianteList;
     private List<Estudiante.Genero> generoEstudianteList;
     private List<Estudiante.GrupoSanguineo> grupoSanguineoEstudianteList;
     private List<Estudiante> estudianteList;
+    //
+    private List<Curso.Modalidad> modalidadList;
+    private List<Curso> cursoList;
     
+    //
+    private Curso curso;
+    //
     private Estudiante estudiante;
     
+    
+    //
     private Estudiante.TipoIdentificacion paramTipoIdentificacion;
     private String paramNumeroIdentificacion;
     private String paramNombres;
     private String paramApellidos;
-    private String page = "index.xhtml";
+    //
+    private String paramNombreCurso;
+    private String paramCodigo;
+
+    public void setTipoIdentificacionEstudianteList(List<Estudiante.TipoIdentificacion> tipoIdentificacionEstudianteList) {
+        this.tipoIdentificacionEstudianteList = tipoIdentificacionEstudianteList;
+    }
+
+    public void setGeneroEstudianteList(List<Estudiante.Genero> generoEstudianteList) {
+        this.generoEstudianteList = generoEstudianteList;
+    }
+
+    public void setGrupoSanguineoEstudianteList(List<Estudiante.GrupoSanguineo> grupoSanguineoEstudianteList) {
+        this.grupoSanguineoEstudianteList = grupoSanguineoEstudianteList;
+    }
+
+    public void setEstudianteList(List<Estudiante> estudianteList) {
+        this.estudianteList = estudianteList;
+    }
+
+    public void setModalidadList(List<Curso.Modalidad> modalidadList) {
+        this.modalidadList = modalidadList;
+    }
+
+    public List<Curso.Modalidad> getModalidadList() {
+        return modalidadList;
+    }
+
+    public void setCursoList(List<Curso> cursoList) {
+        this.cursoList = cursoList;
+    }
+
+    public List<Curso> getCursoList() {
+        return cursoList;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public void setParamNombreCurso(String paramNombreCurso) {
+        this.paramNombreCurso = paramNombreCurso;
+    }
+
+    public String getParamNombreCurso() {
+        return paramNombreCurso;
+    }
+
+    public void setParamCodigo(String paramCodigo) {
+        this.paramCodigo = paramCodigo;
+    }
+
+    public String getParamCodigo() {
+        return paramCodigo;
+    }
+
+    public void setParamModalidad(Curso.Modalidad paramModalidad) {
+        this.paramModalidad = paramModalidad;
+    }
+
+    public Curso.Modalidad getParamModalidad() {
+        return paramModalidad;
+    }
+
+    private Curso.Modalidad paramModalidad;
     
+    private String page = "index.xhtml";
+    //Fin Fields
     
     private void preparateGoEstudiante(){
         this.tipoIdentificacionEstudianteList =  ListGenerator.getTipoIdentificacionEstudiante();
@@ -116,7 +197,29 @@ public class AdmRegistroBean implements Serializable{
         this.estudiante = null;
         this.page = "estudiante.xhtml";
     }
+    
+    private void preparateGoCursos(){
+        this.modalidadList =  ListGenerator.getModalidadCurso();
+        
+        this.cursoList = new ArrayList<>();
+        
+        this.findCursoAction();
+    }
+    
+    public void goCursosAction(){
+        
+        this.preparateGoCursos();
+        this.page="cursos.xhtml";
+    }
 
+    public void findCursoAction(){
+        try{
+            this.cursoList = this.planillaDelegate.getCursoByCriteria(paramNombreCurso,paramCodigo,paramModalidad);
+        }catch(Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+        }
+    }
+    //Getters y Setters
     public void setDatePatternInput(String datePatternInput) {
         this.datePatternInput = datePatternInput;
     }
@@ -145,9 +248,6 @@ public class AdmRegistroBean implements Serializable{
     public List<?> getGrupoSanguineoEstudianteList() {
         return grupoSanguineoEstudianteList;
     }
-
-    
-
     public List<?> getEstudianteList() {
         return estudianteList;
     }
@@ -195,4 +295,5 @@ public class AdmRegistroBean implements Serializable{
     public String getPage() {
         return page;
     }
+    //Fin Getters y Setters
 }
