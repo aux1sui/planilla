@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+    <ui:composition>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <h:panelGrid columns="2">
+            <h:outputText value="Nombre del curso"/>
+            <h:inputText value="#{admRegistroBean.curso.nombre}"/>
+            <h:outputText value="Codigo"/>
+            <h:inputText value="#{admRegistroBean.curso.codigo}"/>
+            <h:outputText value="Fecha de inicio"/>
+            <rich:calendar value="#{admRegistroBean.curso.fechaInicio}" enableManualInput="true" datePattern="#{admRegistroBean.datePatternInput}" label="Fecha Inicio" required="true"></rich:calendar>
+            <h:outputText value="Fecha de terminacion"/>
+            <rich:calendar value="#{admRegistroBean.curso.fechaFin}" enableManualInput="true" datePattern="#{admRegistroBean.datePatternInput}" label="Fecha Fin" required="true"></rich:calendar>
+            <h:outputText value="Modalidad"/>
+            <h:selectOneMenu value="#{admRegistroBean.curso.modalidad}">
+                <f:selectItem itemLabel="" itemValue=""/>
+                <f:selectItems value="#{admRegistroBean.modalidadList}" var="modalidad" itemValue="#{modalidad}" itemLabel="#{modalidad}"/>
+            </h:selectOneMenu>
+            <h:outputText value="Cupos"/>
+            <h:inputText value="#{admRegistroBean.curso.cupos}"/>
+            <h:outputText value="Cantidad de notas"/>
+            <h:inputText value="#{admRegistroBean.curso.cantidadNota}" maxlength="6"/>
+            <h:commandButton value="Guardar" action="#{admRegistroBean.addCursoAction}"/>
+            <h:commandButton value="Cancelar" action="#{admRegistroBean.cancelCursoAction}" immediate="true"/>
+        </h:panelGrid>
+    </ui:composition>
+</html>

@@ -34,7 +34,7 @@
         <h:outputText value = "Fecha de nacimiento" />
         <rich:calendar value="#{admRegistroBean.estudiante.fechaNacimiento}" enableManualInput="true" datePattern="#{admRegistroBean.datePatternInput}" label="Fecha nacimiento" required="true"></rich:calendar>
         <h:commandButton value="Guardar" action="#{admRegistroBean.addEstudianteAction}"/>
-        <h:commandButton value="Cancelar" action="#{admRegistroBean.cancelAction}" immediate="true"/>
+        <h:commandButton value="Cancelar" action="#{admRegistroBean.cancelEstudianteAction}" immediate="true"/>
         </h:panelGrid>
     </ui:composition>
 </html>

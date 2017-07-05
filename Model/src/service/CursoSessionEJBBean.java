@@ -37,18 +37,20 @@ public class CursoSessionEJBBean implements CursoSessionEJBLocal {
         em.remove(curso);
     }
     public List<Curso> getCursoByCriteria(String paramNombre, String paramCodigo, Curso.Modalidad paramModalidad) throws Exception {
+        
         StringBuilder ejbql = new StringBuilder();
-        ejbql.append("select o from o.Curso where o.id=o.id");
+        ejbql.append("select o from Curso o where o.id=o.id");
         if(paramNombre!=null){
             ejbql.append(" and UPPER(o.nombre) LIKE :nombre");
         }
         if(paramCodigo!=null){
-            ejbql.append(" and o.codigo = :codigo");
+            ejbql.append(" and o.codigo=:codigo");
         }
         if(paramModalidad!=null){
-            ejbql.append(" and o.modalidad = :modalidad");
+            ejbql.append(" and o.modalidad=:modalidad");
         }
         ejbql.append(" order by o.nombre");
+        
         Query query= em.createQuery(ejbql.toString());
         if(paramNombre!=null){
             query.setParameter("nombre", "%"+paramNombre.trim().toUpperCase()+"%");
@@ -59,9 +61,10 @@ public class CursoSessionEJBBean implements CursoSessionEJBLocal {
         if(paramModalidad!=null){
             query.setParameter("modalidad", paramModalidad);
         }
+        
         List<Curso> cursoList = query.getResultList();
         if(cursoList.isEmpty()){
-            throw new Exception("No se han encontrado cursos según los parámetros de búsqueda establecidos ");
+            throw new Exception("No se han encontrado cursos según los parámetros de búsqueda establecidos ");   
         }
         return cursoList;
     }

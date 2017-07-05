@@ -15,40 +15,44 @@
         </h:panelGrid>
         <h:panelGrid columns="2" cellspacing="1" cellpadding="0">
             <h:commandButton value="Buscar" action="#{admRegistroBean.findCursoAction}" render="form"/>
-            <h:commandButton value="Nuevo" action="#{admRegistroBean.goMatriculaAction}"/>
+            <h:commandButton value="Nuevo"  action="#{admRegistroBean.goAddCursoAction}"/>
         </h:panelGrid>
-        <rich:dataTable id="dtCursos" onrowmouseover="this.style.backgroundColor='#F1F1F1'" border="1" onrowmouseout="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" rowKeyVar="row"
-                        var="cursos" value="#{admRegistroBean.cursoList}">
+        <rich:dataTable id="dtCurso" onrowmouseover="this.style.backgroundColor='#F1F1F1'" border="1" onrowmouseout="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" rowKeyVar="row"
+                        var="curso" value="#{admRegistroBean.cursoList}">
             <f:facet name="header">
                 <h:outputText value="Cursos"/>
             </f:facet>
             <rich:column styleClass="text_align_right" width="10px;">
                 <f:facet name="header">
-                    <h:outputText value=""/>
+                    <h:outputText value="#"/>
                 </f:facet>
-                <h:commandLink action="#{admRegistroBean.goUpdEstudianteAction}" immediate="true" status="status">
-                    <f:setPropertyActionListener value="#{estudiante}" target="#{admRegistroBean.estudiante}"/>
                     <h:outputText value="#{row+1}"/>
-                </h:commandLink>
-            </rich:column>
-            <rich:column styleClass="text_align_left" width="70px;">
-                
-                <f:facet name="header">
-                    <h:outputText value="Nombre Curso"/>
-                </f:facet>
-                
-                    
-                    <h:outputText value="#{curso.nombre}"/>
-              
             </rich:column>
             <rich:column styleClass="text_align_left" width="70px;">
                 <f:facet name="header">
-                    <h:outputText value="Codigo Curso"/>
+                    <h:outputText value="Codigo"/>
                 </f:facet>
-                
-                    
                     <h:outputText value="#{curso.codigo}"/>
-                
+            </rich:column>
+            <rich:column styleClass="text_align_left" width="70px;">
+                <f:facet name="header">
+                    <h:outputText value="Nombre"/>
+                </f:facet>
+                    <h:outputText value="#{curso.nombre}"/>
+            </rich:column>
+           <rich:column styleClass="text_align_left" width="70px;">
+                <f:facet name="header">
+                    <h:outputText value="Modalidad"/>
+                </f:facet>
+                    <h:outputText value="#{curso.modalidad}"/>
+            </rich:column>
+            <rich:column styleClass="text_align" width="70px;">
+                <f:facet name="header">
+                    <h:outputText value="Matricular"/>
+                </f:facet>
+                    <h:commandButton value="+" action="#{admRegistroBean.matricularAction()}">
+                        <f:setPropertyActionListener value="#{curso}" target="#{admRegistroBean.curso}"/>
+                    </h:commandButton>
             </rich:column>
             <f:facet name="footer">
                 <rich:dataScroller renderIfSinglePage="false" status="status"/>

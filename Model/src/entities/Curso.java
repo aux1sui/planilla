@@ -10,6 +10,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,15 +25,15 @@ import javax.validation.constraints.NotNull;
 @Entity
 @SequenceGenerator(name="Curso_Gen", sequenceName="SEQ_CURSO",allocationSize=1)
 public class Curso implements Serializable {
+    private static final long serialVersionUID = 8021503866785009388L;
     public enum Modalidad{
         VIRTUAL,
         PRESENCIAL;
     }
-    private static final long serialVersionUID = 8021503866785009388L;
     
     @NotNull
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Certificacion_Gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Curso_Gen")
     @Column(nullable = false)
     private Long id;
      
@@ -59,6 +61,7 @@ public class Curso implements Serializable {
     
     
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Curso.Modalidad modalidad;
     
@@ -66,11 +69,6 @@ public class Curso implements Serializable {
     @Column(nullable = false, length = 500)
     private String nombre;
     
-    @NotNull
-    @OneToMany(mappedBy = "curso", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<Matricula> matriculaList1;
-
-
     public Long getCantidadNota() {
         return cantidadNota;
     }
@@ -135,24 +133,5 @@ public class Curso implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public List<Matricula> getMatriculaList1() {
-        return matriculaList1;
-    }
-
-    public void setMatriculaList1(List<Matricula> matriculaList1) {
-        this.matriculaList1 = matriculaList1;
-    }
-
-    public Matricula addMatricula(Matricula matricula) {
-        getMatriculaList1().add(matricula);
-        matricula.setCurso(this);
-        return matricula;
-    }
-
-    public Matricula removeMatricula(Matricula matricula) {
-        getMatriculaList1().remove(matricula);
-        matricula.setCurso(null);
-        return matricula;
-    }
+    
 }

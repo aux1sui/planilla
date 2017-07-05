@@ -3,9 +3,12 @@ package backing;
 import entities.Curso;
 import entities.Estudiante;
 
+import entities.Matricula;
+
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -43,6 +46,8 @@ public class AdmRegistroBean implements Serializable{
     private Curso curso;
     //
     private Estudiante estudiante;
+    //
+    private Matricula matricula;
     
     
     //
@@ -53,70 +58,6 @@ public class AdmRegistroBean implements Serializable{
     //
     private String paramNombreCurso;
     private String paramCodigo;
-
-    public void setTipoIdentificacionEstudianteList(List<Estudiante.TipoIdentificacion> tipoIdentificacionEstudianteList) {
-        this.tipoIdentificacionEstudianteList = tipoIdentificacionEstudianteList;
-    }
-
-    public void setGeneroEstudianteList(List<Estudiante.Genero> generoEstudianteList) {
-        this.generoEstudianteList = generoEstudianteList;
-    }
-
-    public void setGrupoSanguineoEstudianteList(List<Estudiante.GrupoSanguineo> grupoSanguineoEstudianteList) {
-        this.grupoSanguineoEstudianteList = grupoSanguineoEstudianteList;
-    }
-
-    public void setEstudianteList(List<Estudiante> estudianteList) {
-        this.estudianteList = estudianteList;
-    }
-
-    public void setModalidadList(List<Curso.Modalidad> modalidadList) {
-        this.modalidadList = modalidadList;
-    }
-
-    public List<Curso.Modalidad> getModalidadList() {
-        return modalidadList;
-    }
-
-    public void setCursoList(List<Curso> cursoList) {
-        this.cursoList = cursoList;
-    }
-
-    public List<Curso> getCursoList() {
-        return cursoList;
-    }
-
-    public void setCurso(Curso curso) {
-        this.curso = curso;
-    }
-
-    public Curso getCurso() {
-        return curso;
-    }
-
-    public void setParamNombreCurso(String paramNombreCurso) {
-        this.paramNombreCurso = paramNombreCurso;
-    }
-
-    public String getParamNombreCurso() {
-        return paramNombreCurso;
-    }
-
-    public void setParamCodigo(String paramCodigo) {
-        this.paramCodigo = paramCodigo;
-    }
-
-    public String getParamCodigo() {
-        return paramCodigo;
-    }
-
-    public void setParamModalidad(Curso.Modalidad paramModalidad) {
-        this.paramModalidad = paramModalidad;
-    }
-
-    public Curso.Modalidad getParamModalidad() {
-        return paramModalidad;
-    }
 
     private Curso.Modalidad paramModalidad;
     
@@ -176,6 +117,7 @@ public class AdmRegistroBean implements Serializable{
             this.estudiante = this.planillaDelegate.mergeEstudiante(this.estudiante);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "Se actualizo correctamente", "Se actualizo correctamente"));
             this.findEstudianteAction();
+            this.findCursoAction();
             this.page= "estudiante.xhtml";
             
         }catch(Exception e){
@@ -193,11 +135,14 @@ public class AdmRegistroBean implements Serializable{
         }
     }
     
-    public void cancelAction(){
+    public void cancelEstudianteAction(){
         this.estudiante = null;
         this.page = "estudiante.xhtml";
     }
-    
+    public void cancelCursoAction(){
+        this.curso = null;
+        this.page = "cursos.xhtml";
+    }
     private void preparateGoCursos(){
         this.modalidadList =  ListGenerator.getModalidadCurso();
         
@@ -205,7 +150,6 @@ public class AdmRegistroBean implements Serializable{
         
         this.findCursoAction();
     }
-    
     public void goCursosAction(){
         
         this.preparateGoCursos();
@@ -217,6 +161,41 @@ public class AdmRegistroBean implements Serializable{
             this.cursoList = this.planillaDelegate.getCursoByCriteria(paramNombreCurso,paramCodigo,paramModalidad);
         }catch(Exception e){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+        }
+    }
+    private void preparateGoAddCurso(){
+        this.curso= new Curso();
+        this.modalidadList =  ListGenerator.getModalidadCurso();
+    }
+    
+    public void goAddCursoAction(){
+        this.preparateGoAddCurso();
+        this.page = "cursosAdd.xhtml";
+    }
+    
+    public void addCursoAction(){
+        try{
+            this.planillaDelegate.persistCurso(this.curso);
+            this.cursoList.add(this.curso);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se guardo correctamente", "Se guardo correctamente"));
+            this.page= "cursos.xhtml";
+        }catch(Exception e){
+            e.printStackTrace(System.out);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getStackTrace().toString(), e.getStackTrace().toString()));
+        }
+    }
+    public void matricularAction(){
+        try{
+            matricula.setEstudiante(estudiante);
+            matricula.setCurso(curso);
+            matricula.setFechaRegistro(new Date());
+            this.matricula = this.planillaDelegate.persistMatricula(this.matricula);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "Se actualizo correctamente", "Se actualizo correctamente"));
+            this.findEstudianteAction();
+            this.page= "estudiante.xhtml";
+            
+        }catch(Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  e.getMessage(), e.getMessage()));
         }
     }
     //Getters y Setters
@@ -294,6 +273,71 @@ public class AdmRegistroBean implements Serializable{
 
     public String getPage() {
         return page;
+    }
+
+
+    public void setTipoIdentificacionEstudianteList(List<Estudiante.TipoIdentificacion> tipoIdentificacionEstudianteList) {
+        this.tipoIdentificacionEstudianteList = tipoIdentificacionEstudianteList;
+    }
+
+    public void setGeneroEstudianteList(List<Estudiante.Genero> generoEstudianteList) {
+        this.generoEstudianteList = generoEstudianteList;
+    }
+
+    public void setGrupoSanguineoEstudianteList(List<Estudiante.GrupoSanguineo> grupoSanguineoEstudianteList) {
+        this.grupoSanguineoEstudianteList = grupoSanguineoEstudianteList;
+    }
+
+    public void setEstudianteList(List<Estudiante> estudianteList) {
+        this.estudianteList = estudianteList;
+    }
+
+    public void setModalidadList(List<Curso.Modalidad> modalidadList) {
+        this.modalidadList = modalidadList;
+    }
+
+    public List<Curso.Modalidad> getModalidadList() {
+        return modalidadList;
+    }
+
+    public void setCursoList(List<Curso> cursoList) {
+        this.cursoList = cursoList;
+    }
+
+    public List<Curso> getCursoList() {
+        return cursoList;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public void setParamNombreCurso(String paramNombreCurso) {
+        this.paramNombreCurso = paramNombreCurso;
+    }
+
+    public String getParamNombreCurso() {
+        return paramNombreCurso;
+    }
+
+    public void setParamCodigo(String paramCodigo) {
+        this.paramCodigo = paramCodigo;
+    }
+
+    public String getParamCodigo() {
+        return paramCodigo;
+    }
+
+    public void setParamModalidad(Curso.Modalidad paramModalidad) {
+        this.paramModalidad = paramModalidad;
+    }
+
+    public Curso.Modalidad getParamModalidad() {
+        return paramModalidad;
     }
     //Fin Getters y Setters
 }

@@ -3,6 +3,8 @@ package backing;
 import entities.Curso;
 import entities.Estudiante;
 
+import entities.Matricula;
+
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -14,13 +16,17 @@ import service.CursoSessionEJBBean;
 import service.CursoSessionEJBLocal;
 import service.EstudianteSessionEJBBean;
 import service.EstudianteSessionEJBLocal;
+import service.MatriculaSessionEJBLocal;
 
 @ManagedBean(name = "planillaDelegate")
 @ApplicationScoped
 public class DelegatePlanilla {
     private @EJB
     EstudianteSessionEJBLocal estudianteSessionEJBLocal;
+    private @EJB
     CursoSessionEJBLocal cursoSessionEJBLocal; 
+    private @EJB
+    MatriculaSessionEJBLocal matriculaSessionEJBLocal;
     
     Estudiante persistEstudiante(Estudiante estudiante){
         return this.estudianteSessionEJBLocal.persistEstudiante(estudiante);
@@ -52,6 +58,17 @@ public class DelegatePlanilla {
     
     List<Curso> getCursoByCriteria(String paramNombre, String paramCodigo, Curso.Modalidad paramModalidad) throws Exception {
         return this.cursoSessionEJBLocal.getCursoByCriteria(paramNombre, paramCodigo, paramModalidad);
+    }
+    Matricula persistMatricula(Matricula matricula){
+        return this.matriculaSessionEJBLocal.persistMatricula(matricula);
+    }
+
+    Matricula mergeMatricula(Matricula matricula){
+        return this.mergeMatricula(matricula);
+    }
+
+    void removeMatricula(Matricula matricula){
+        this.removeMatricula(matricula);
     }
 
     
