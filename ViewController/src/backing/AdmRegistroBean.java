@@ -11,11 +11,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
+
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+
 
 import org.apache.log4j.Logger;
 
@@ -28,7 +31,10 @@ public class AdmRegistroBean implements Serializable{
     @SuppressWarnings("compatibility")
         //Fields
     private static final long serialVersionUID = 8336114230726923893L;
-
+    static final Logger logger = Logger.getLogger(AdmRegistroBean.class);
+    
+    
+    
     private String datePatternInput = "dd/MM/yyyy";
     
     @ManagedProperty(value = "#{planillaDelegate}")
@@ -40,6 +46,7 @@ public class AdmRegistroBean implements Serializable{
     private List<Estudiante.Genero> generoEstudianteList;
     private List<Estudiante.GrupoSanguineo> grupoSanguineoEstudianteList;
     private List<Estudiante> estudianteList;
+    private List<Estudiante> estudianteListTabla;
     //
     private List<Curso.Modalidad> modalidadList;
     private List<Curso> cursoList;
@@ -70,6 +77,7 @@ public class AdmRegistroBean implements Serializable{
     //Fin Fields
     
     private void preparateGoEstudiante(){
+        
         this.tipoIdentificacionEstudianteList =  ListGenerator.getTipoIdentificacionEstudiante();
         this.generoEstudianteList = ListGenerator.getGeneroEstudiante();
         this.grupoSanguineoEstudianteList = ListGenerator.getGrupoSanguineoEstudiante();
@@ -80,29 +88,38 @@ public class AdmRegistroBean implements Serializable{
     }
     
     public void goEstudianteAction(){
+     
         
+        logger.info("Accediendo a la pagina "+page);
         this.preparateGoEstudiante();
         this.page="estudiante.xhtml";
-    }
+        logger.info("Acceso Exitoso");
+     }
 
     public void findEstudianteAction(){
         try{
             this.estudianteList = this.planillaDelegate.getEstudianteByCriteria(this.paramTipoIdentificacion, this.paramNumeroIdentificacion, this.paramNombres, this.paramApellidos);
+            logger.info("Se obtuvieron resultados del metodo getEstudianteByCriteria. cant= "+estudianteList.size());
         }catch(Exception e){
+            logger.error("Error al encontrar Estudiante "+e.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
     }
     public void findMatriculaAction(){
         try{
             this.matriculaList=this.planillaDelegate.getMatricula(this.estudiante);
+            logger.info("Se obtuvieron resultados de getMatricula. cant= "+matriculaList.size());
         }catch(Exception e){
+            logger.error("Error al encontrar Matricula "+e.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
         }
     }
     public void findEstudianteMatriculaAction(){
         try{
             this.cursoMatriculaList=this.planillaDelegate.getEstudiantesMatricula(this.curso);
+            logger.info("Se obtuvieron resultados de getEstudiantesMatricula. cant= "+cursoMatriculaList.size());
         }catch(Exception e){
+            logger.error("Error al encontrar Estudiantes matriculados al curso "+curso.getNombre()+"-"+e.getMessage());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
         }
     }
@@ -111,17 +128,22 @@ public class AdmRegistroBean implements Serializable{
     }
     
     public void goAddEstudianteAction(){
+        logger.info("Accediendo a la pagina "+page);
         this.preparateGoAddEstudiante();
         this.page = "estudianteAdd.xhtml";
+        logger.info("Acceso Exitoso");
     }
     
     public void addEstudianteAction(){
         try{
+            logger.info("Añadiendo a "+estudiante.getNombres());
             this.planillaDelegate.persistEstudiante(this.estudiante);
             this.estudianteList.add(this.estudiante);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se guardo correctamente", "Se guardo correctamente"));
             this.page= "estudiante.xhtml";
+            logger.info("Estudiante añadido");
         }catch(Exception e){
+            logger.error("Error al añadir Estudiante "+estudiante.getNombres()+"-"+e.getMessage());
             e.printStackTrace(System.out);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getStackTrace().toString(), e.getStackTrace().toString()));
         }
@@ -196,15 +218,6 @@ public class AdmRegistroBean implements Serializable{
         try{
             this.planillaDelegate.persistCurso(this.curso);
             this.cursoList.add(this.curso);
-            
-            /* for(Estudiante estudiante:estudianteList){
-                Matricula matriculaActual = new Matricula();
-                matriculaActual.setCurso(matricula.getCurso());
-                matriculaActual.setFechaRegistro(matricula.getFechaRegistro());
-                matriculaActual.setEstudiante(estudiante);
-                this.em.persist(matriculaActual);
-            } */
-            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se guardo correctamente", "Se guardo correctamente"));
             this.page= "cursos.xhtml";
         }catch(Exception e){
@@ -240,6 +253,34 @@ public class AdmRegistroBean implements Serializable{
     public void goCursoShowAction(){
         preparateCursoShow();
         page="cursoShow.xhtml";
+    }
+    private void preparateGoAddMatricula() throws Exception {
+        estudiante=new Estudiante();
+        matricula= new Matricula();
+        this.estudianteListTabla =  planillaDelegate.getEstudianteByCriteria(null, null, null, null);
+        estudianteList= new ArrayList<Estudiante>();
+        
+    }
+    
+    public void goAddMatriculaAction() throws Exception {
+        this.preparateGoAddMatricula();
+        this.page = "matriculaAdd.xhtml";
+    }
+    public void selectEstudianteMatricula(){
+        this.estudianteList.add(this.estudiante);
+        this.estudianteListTabla.remove(this.estudiante);
+        this.curso.setCupos(this.curso.getCupos()-1);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " Seleccionado", " Seleccionado"));
+    }
+    public void addMatriculaAction(){
+        try{
+            this.planillaDelegate.persistMatriculas(estudianteList,curso);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se guardo correctamente", "Se guardo correctamente"));
+            this.page= "cursosShow.xhtml";
+        }catch(Exception e){
+            e.printStackTrace();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
+        }
     }
     //Getters y Setters
     public void setDatePatternInput(String datePatternInput) {
@@ -395,6 +436,22 @@ public class AdmRegistroBean implements Serializable{
 
     public List<Estudiante> getCursoMatriculaList() {
         return cursoMatriculaList;
+    }
+
+    public void setEstudianteListTabla(List<Estudiante> estudianteListTabla) {
+        this.estudianteListTabla = estudianteListTabla;
+    }
+
+    public List<Estudiante> getEstudianteListTabla() {
+        return estudianteListTabla;
+    }
+
+    public void setMatricula(Matricula matricula) {
+        this.matricula = matricula;
+    }
+
+    public Matricula getMatricula() {
+        return matricula;
     }
     //Fin Getters y Setters
 }

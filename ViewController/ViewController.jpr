@@ -156,6 +156,9 @@
                         </list>
                      </hash>
                      <value n="internalName" v="libraries"/>
+                     <list n="selectedLibraries">
+                        <string v="log4j"/>
+                     </list>
                      <value n="targetWithinJar" v="WEB-INF/lib"/>
                      <value n="type" v="3"/>
                   </hash>
@@ -215,7 +218,7 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="log4j"/>
+            <value n="id" v="Log4j-1.2.17"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>
@@ -247,10 +250,10 @@
             </hash>
             <hash>
                <list n="classPath">
-                  <url path="log4j-1.2.17.jar" jar-entry=""/>
+                  <url path="../lib/log4j-1.2.17.jar" jar-entry=""/>
                </list>
-               <value n="description" v="log4j"/>
-               <value n="id" v="log4j"/>
+               <value n="description" v="Log4j-1.2.17"/>
+               <value n="id" v="Log4j-1.2.17"/>
             </hash>
          </list>
       </hash>
@@ -284,7 +287,7 @@
             <value n="isJDK" v="false"/>
          </hash>
          <hash>
-            <value n="id" v="log4j"/>
+            <value n="id" v="Log4j-1.2.17"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

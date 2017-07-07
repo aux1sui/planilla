@@ -77,6 +77,8 @@ public class DelegatePlanilla {
         return this.matriculaSessionEJBLocal.getEstudiantesMatricula(curso);
     }
 
-    
+    public void persistMatriculas(List<Estudiante> listaEstudiante, Curso curso) {
+        this.matriculaSessionEJBLocal.persistMatriculas(listaEstudiante, curso);
+    }
     
 }

@@ -10,6 +10,8 @@ import javax.ejb.Local;
 
 @Local
 public interface MatriculaSessionEJBLocal {
+    void persistMatriculas(List<Estudiante> listaEstudiante, Curso curso) ;
+    
     Matricula persistMatricula(Matricula matricula);
 
     Matricula mergeMatricula(Matricula matricula);
