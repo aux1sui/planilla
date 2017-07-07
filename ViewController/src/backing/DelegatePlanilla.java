@@ -62,6 +62,9 @@ public class DelegatePlanilla {
     Matricula persistMatricula(Matricula matricula){
         return this.matriculaSessionEJBLocal.persistMatricula(matricula);
     }
+    List<Matricula> getMatricula(Estudiante estudiante)throws Exception{
+        return this.matriculaSessionEJBLocal.getMatricula(estudiante);
+    }
 
     Matricula mergeMatricula(Matricula matricula){
         return this.mergeMatricula(matricula);
@@ -69,6 +72,9 @@ public class DelegatePlanilla {
 
     void removeMatricula(Matricula matricula){
         this.removeMatricula(matricula);
+    }
+    public List<Estudiante> getEstudiantesMatricula(Curso curso)throws Exception{
+        return this.matriculaSessionEJBLocal.getEstudiantesMatricula(curso);
     }
 
     

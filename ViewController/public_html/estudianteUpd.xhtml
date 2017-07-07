@@ -4,6 +4,8 @@
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <h:panelGrid columns="2">
+        <h:panelGrid>
+        <h:panelGrid columns="2">
         <h:outputText value="Tipo Identificacion"/>
         <h:outputText value="#{admRegistroBean.estudiante.tipoIdentificacion.label}"/>
         <h:outputText value="Numero Identificacion"/>
@@ -33,10 +35,39 @@
         </h:panelGrid>
         <h:panelGrid columns="3">
         <h:commandButton value="Editar" action="#{admRegistroBean.updEstudianteAction}"/>
-        <h:commandButton value="Cancelar" action="#{admRegistroBean.cancelAction}" immediate="true"/>
+        <h:commandButton value="Cancelar" action="#{admRegistroBean.cancelEstudianteAction}" immediate="true"/>
         <h:commandButton value="Matricular Cursos" action="#{admRegistroBean.goCursosAction}" immediate="true">
             <f:setPropertyActionListener value="#{estudiante}" target="#{admRegistroBean.estudiante}"/>
         </h:commandButton>
+        </h:panelGrid>
+        </h:panelGrid>
+        <rich:dataTable id="dtMatricula" onrowmouseover="this.style.backgroundColor='#F1F1F1'" border="1" onrowmouseout="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" rowKeyVar="row"
+                        var="matricula" value="#{admRegistroBean.matriculaList}">
+            <f:facet name="header">
+                <h:outputText value="Cursos matriculados"/>
+            </f:facet>
+            <rich:column styleClass="text_align_right" width="10px;">
+                <f:facet name="header">
+                    <h:outputText value="#"/>
+                </f:facet>
+                    <h:outputText value="#{row+1}"/>
+            </rich:column>
+            <rich:column styleClass="text_align_left" width="70px;">
+                <f:facet name="header">
+                    <h:outputText value="Nombre"/>
+                </f:facet>
+                    <h:outputText value="#{matricula.curso.nombre}"/>
+            </rich:column>
+            <rich:column styleClass="text_align_left" width="70px;">
+                <f:facet name="header">
+                    <h:outputText value="Codigo"/>
+                </f:facet>
+                    <h:outputText value="#{matricula.curso.codigo}"/> 
+            </rich:column>
+            <f:facet name="footer">
+                <rich:dataScroller renderIfSinglePage="false" status="status"/>
+            </f:facet>
+        </rich:dataTable>
         </h:panelGrid>
     </ui:composition>
 </html>

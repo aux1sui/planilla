@@ -44,7 +44,7 @@ public class CursoSessionEJBBean implements CursoSessionEJBLocal {
             ejbql.append(" and UPPER(o.nombre) LIKE :nombre");
         }
         if(paramCodigo!=null){
-            ejbql.append(" and o.codigo=:codigo");
+            ejbql.append(" and o.codigo like :codigo");
         }
         if(paramModalidad!=null){
             ejbql.append(" and o.modalidad=:modalidad");
@@ -56,7 +56,7 @@ public class CursoSessionEJBBean implements CursoSessionEJBLocal {
             query.setParameter("nombre", "%"+paramNombre.trim().toUpperCase()+"%");
         }
         if(paramCodigo!=null){
-            query.setParameter("codigo", paramCodigo.trim());
+            query.setParameter("codigo", "%"+paramCodigo.trim()+"%");
         }
         if(paramModalidad!=null){
             query.setParameter("modalidad", paramModalidad);

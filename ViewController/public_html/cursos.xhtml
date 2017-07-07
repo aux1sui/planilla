@@ -26,33 +26,28 @@
                 <f:facet name="header">
                     <h:outputText value="#"/>
                 </f:facet>
+                <h:commandLink action="#{admRegistroBean.goCursoShowAction}" immediate="true" status="status">
+                    <f:setPropertyActionListener value="#{curso}" target="#{admRegistroBean.curso}"/>
                     <h:outputText value="#{row+1}"/>
+                </h:commandLink>
             </rich:column>
             <rich:column styleClass="text_align_left" width="70px;">
                 <f:facet name="header">
                     <h:outputText value="Codigo"/>
                 </f:facet>
+                <h:commandLink action="#{admRegistroBean.goCursoShowAction}" immediate="true" status="status">
+                    <f:setPropertyActionListener value="#{curso}" target="#{admRegistroBean.curso}"/>
                     <h:outputText value="#{curso.codigo}"/>
+                </h:commandLink>
             </rich:column>
             <rich:column styleClass="text_align_left" width="70px;">
                 <f:facet name="header">
                     <h:outputText value="Nombre"/>
                 </f:facet>
+                <h:commandLink action="#{admRegistroBean.goCursoShowAction}" immediate="true" status="status">
+                    <f:setPropertyActionListener value="#{curso}" target="#{admRegistroBean.curso}"/>
                     <h:outputText value="#{curso.nombre}"/>
-            </rich:column>
-           <rich:column styleClass="text_align_left" width="70px;">
-                <f:facet name="header">
-                    <h:outputText value="Modalidad"/>
-                </f:facet>
-                    <h:outputText value="#{curso.modalidad}"/>
-            </rich:column>
-            <rich:column styleClass="text_align" width="70px;">
-                <f:facet name="header">
-                    <h:outputText value="Matricular"/>
-                </f:facet>
-                    <h:commandButton value="+" action="#{admRegistroBean.matricularAction()}">
-                        <f:setPropertyActionListener value="#{curso}" target="#{admRegistroBean.curso}"/>
-                    </h:commandButton>
+                </h:commandLink>
             </rich:column>
             <f:facet name="footer">
                 <rich:dataScroller renderIfSinglePage="false" status="status"/>

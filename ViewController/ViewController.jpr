@@ -214,6 +214,10 @@
             <value n="id" v="JSTL 1.2 Tags"/>
             <value n="isJDK" v="false"/>
          </hash>
+         <hash>
+            <value n="id" v="log4j"/>
+            <value n="isJDK" v="false"/>
+         </hash>
       </list>
       <hash n="internalDefinitions">
          <list n="libraryDefinitions">
@@ -240,6 +244,13 @@
                <value n="deployedByDefault" v="true"/>
                <value n="description" v="jsf-facelets-1.1.15.B1.jar"/>
                <value n="id" v="jsf-facelets-1.1.15.B1.jar"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url path="log4j-1.2.17.jar" jar-entry=""/>
+               </list>
+               <value n="description" v="log4j"/>
+               <value n="id" v="log4j"/>
             </hash>
          </list>
       </hash>
@@ -270,6 +281,10 @@
          </hash>
          <hash>
             <value n="id" v="JSTL 1.2 Tags"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="log4j"/>
             <value n="isJDK" v="false"/>
          </hash>
       </list>

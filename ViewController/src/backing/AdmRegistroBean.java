@@ -17,6 +17,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Logger;
+
 import utils.ListGenerator;
 
 @ManagedBean(name = "admRegistroBean")
@@ -41,7 +43,10 @@ public class AdmRegistroBean implements Serializable{
     //
     private List<Curso.Modalidad> modalidadList;
     private List<Curso> cursoList;
-    
+    private List<Estudiante> cursoMatriculaList;
+    private List<Matricula> matriculaList;
+
+   
     //
     private Curso curso;
     //
@@ -87,7 +92,20 @@ public class AdmRegistroBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), e.getMessage()));
         }
     }
-    
+    public void findMatriculaAction(){
+        try{
+            this.matriculaList=this.planillaDelegate.getMatricula(this.estudiante);
+        }catch(Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
+        }
+    }
+    public void findEstudianteMatriculaAction(){
+        try{
+            this.cursoMatriculaList=this.planillaDelegate.getEstudiantesMatricula(this.curso);
+        }catch(Exception e){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,e.getMessage(),e.getMessage()));
+        }
+    }
     private void preparateGoAddEstudiante(){
         this.estudiante = new Estudiante();
     }
@@ -109,6 +127,7 @@ public class AdmRegistroBean implements Serializable{
         }
     }
     public void goUpdEstudianteAction(){
+        findMatriculaAction();
         this.page="estudianteUpd.xhtml";
     }
     
@@ -177,6 +196,15 @@ public class AdmRegistroBean implements Serializable{
         try{
             this.planillaDelegate.persistCurso(this.curso);
             this.cursoList.add(this.curso);
+            
+            /* for(Estudiante estudiante:estudianteList){
+                Matricula matriculaActual = new Matricula();
+                matriculaActual.setCurso(matricula.getCurso());
+                matriculaActual.setFechaRegistro(matricula.getFechaRegistro());
+                matriculaActual.setEstudiante(estudiante);
+                this.em.persist(matriculaActual);
+            } */
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se guardo correctamente", "Se guardo correctamente"));
             this.page= "cursos.xhtml";
         }catch(Exception e){
@@ -186,17 +214,32 @@ public class AdmRegistroBean implements Serializable{
     }
     public void matricularAction(){
         try{
-            matricula.setEstudiante(estudiante);
-            matricula.setCurso(curso);
-            matricula.setFechaRegistro(new Date());
+            
+            this.matricula = new Matricula();
+            this.matricula.setEstudiante(this.estudiante);
+            this.matricula.setCurso(this.curso);
+            this.matricula.setFechaRegistro(new Date());
             this.matricula = this.planillaDelegate.persistMatricula(this.matricula);
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "Se actualizo correctamente", "Se actualizo correctamente"));
             this.findEstudianteAction();
-            this.page= "estudiante.xhtml";
+            this.page= "estudianteUpd.xhtml";
             
         }catch(Exception e){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  e.getMessage(), e.getMessage()));
+            e.printStackTrace(System.err);
         }
+    }
+    private void preparateCursoShow(){
+        this.cursoMatriculaList = new ArrayList<>();
+        findEstudianteMatriculaAction();
+    }
+
+   
+
+    public void goCursoShowAction(){
+        preparateCursoShow();
+        page="cursoShow.xhtml";
     }
     //Getters y Setters
     public void setDatePatternInput(String datePatternInput) {
@@ -338,6 +381,20 @@ public class AdmRegistroBean implements Serializable{
 
     public Curso.Modalidad getParamModalidad() {
         return paramModalidad;
+    }
+    public void setMatriculaList(List<Matricula> matriculaList) {
+        this.matriculaList = matriculaList;
+    }
+
+    public List<Matricula> getMatriculaList() {
+        return matriculaList;
+    }
+    public void setCursoMatriculaList(List<Estudiante> cursoMatriculaList) {
+        this.cursoMatriculaList = cursoMatriculaList;
+    }
+
+    public List<Estudiante> getCursoMatriculaList() {
+        return cursoMatriculaList;
     }
     //Fin Getters y Setters
 }

@@ -30,7 +30,7 @@ public class Matricula implements Serializable {
     @Column(nullable = false)
     private Long id;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date fechaRegistro;
     
@@ -38,12 +38,6 @@ public class Matricula implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ID_ESTUDIANTE")
     private Estudiante estudiante;
-    
-    @OneToMany(mappedBy = "matricula", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<Certificacion> certificacionList;
-    
-    @OneToMany(mappedBy = "matricula1", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<Seguimiento> seguimientoList;
     
     @ManyToOne
     @JoinColumn(name = "ID_CURSO")
@@ -74,46 +68,6 @@ public class Matricula implements Serializable {
 
     public void setEstudiante(Estudiante estudiante) {
         this.estudiante = estudiante;
-    }
-
-    public List<Certificacion> getCertificacionList() {
-        return certificacionList;
-    }
-
-    public void setCertificacionList(List<Certificacion> certificacionList) {
-        this.certificacionList = certificacionList;
-    }
-
-    public Certificacion addCertificacion(Certificacion certificacion) {
-        getCertificacionList().add(certificacion);
-        certificacion.setMatricula(this);
-        return certificacion;
-    }
-
-    public Certificacion removeCertificacion(Certificacion certificacion) {
-        getCertificacionList().remove(certificacion);
-        certificacion.setMatricula(null);
-        return certificacion;
-    }
-
-    public List<Seguimiento> getSeguimientoList() {
-        return seguimientoList;
-    }
-
-    public void setSeguimientoList(List<Seguimiento> seguimientoList) {
-        this.seguimientoList = seguimientoList;
-    }
-
-    public Seguimiento addSeguimiento(Seguimiento seguimiento) {
-        getSeguimientoList().add(seguimiento);
-        seguimiento.setMatricula1(this);
-        return seguimiento;
-    }
-
-    public Seguimiento removeSeguimiento(Seguimiento seguimiento) {
-        getSeguimientoList().remove(seguimiento);
-        seguimiento.setMatricula1(null);
-        return seguimiento;
     }
 
     public Curso getCurso() {
