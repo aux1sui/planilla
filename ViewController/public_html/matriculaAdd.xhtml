@@ -39,9 +39,11 @@
                 <f:facet name="header">
                     <h:outputText value="Numero Identificacion"/>
                 </f:facet>
-                <h:commandLink status="status" immediate="true" action="#{admRegistroBean.selectEstudianteMatricula}">
-                    <f:setPropertyActionListener value="#{estudiante}" target="#{admRegistroBean.estudiante}"/>
+                <h:commandLink status="status" immediate="true" >
+                    <f:setPropertyActionListener value="#{estudiante}" target="#{admRegistroBean.estudianteListMatricula}"/>
+                    
                     <h:outputText value="#{estudianteListTabla.numeroIdentificacion}"/>
+                   
                     </h:commandLink>
             </rich:column>
             

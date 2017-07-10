@@ -46,6 +46,7 @@ public class AdmRegistroBean implements Serializable{
     private List<Estudiante.Genero> generoEstudianteList;
     private List<Estudiante.GrupoSanguineo> grupoSanguineoEstudianteList;
     private List<Estudiante> estudianteList;
+    private List<Estudiante> estudianteListMatricula;
     private List<Estudiante> estudianteListTabla;
     //
     private List<Curso.Modalidad> modalidadList;
@@ -53,7 +54,6 @@ public class AdmRegistroBean implements Serializable{
     private List<Estudiante> cursoMatriculaList;
     private List<Matricula> matriculaList;
 
-   
     //
     private Curso curso;
     //
@@ -258,7 +258,7 @@ public class AdmRegistroBean implements Serializable{
         estudiante=new Estudiante();
         matricula= new Matricula();
         this.estudianteListTabla =  planillaDelegate.getEstudianteByCriteria(null, null, null, null);
-        estudianteList= new ArrayList<Estudiante>();
+        estudianteListMatricula= new ArrayList<Estudiante>();
         
     }
     
@@ -266,15 +266,9 @@ public class AdmRegistroBean implements Serializable{
         this.preparateGoAddMatricula();
         this.page = "matriculaAdd.xhtml";
     }
-    public void selectEstudianteMatricula(){
-        this.estudianteList.add(this.estudiante);
-        this.estudianteListTabla.remove(this.estudiante);
-        this.curso.setCupos(this.curso.getCupos()-1);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, " Seleccionado", " Seleccionado"));
-    }
     public void addMatriculaAction(){
         try{
-            this.planillaDelegate.persistMatriculas(estudianteList,curso);
+            this.planillaDelegate.persistMatriculas(estudianteListMatricula,curso);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Se guardo correctamente", "Se guardo correctamente"));
             this.page= "cursosShow.xhtml";
         }catch(Exception e){
@@ -285,6 +279,14 @@ public class AdmRegistroBean implements Serializable{
     //Getters y Setters
     public void setDatePatternInput(String datePatternInput) {
         this.datePatternInput = datePatternInput;
+    }
+
+    public void setEstudianteListMatricula(List<Estudiante> estudianteListMatricula) {
+        this.estudianteListMatricula = estudianteListMatricula;
+    }
+
+    public List<Estudiante> getEstudianteListMatricula() {
+        return estudianteListMatricula;
     }
 
     public String getDatePatternInput() {
